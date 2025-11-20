@@ -1,0 +1,60 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: kafka
+    container_name: kafka
+    restart: always
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  venda:
+    image: reserva
+    build: . 
+    container_name: reserva
+    hostname: reserva
+    restart: always
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./servicos/reserva:/servicos
+    command: python3 /servicos/servico.py
+
+  estoque:
+    image: quarto
+    build: . 
+    container_name: quarto
+    hostname: quarto
+    restart: always
+    volumes:
+      - ./servicos/quarto:/servicos
+    command: python3 /servicos/servico.py
+  
+  hospedes:
+    image: hospede
+    build: .
+    container_name: hospede
+    hostname: hospede
+    restaart: always 
+    volumes:
+      - ./servicos/hospede:/servicos
+    command: python3 /servicos/servico.py
+  
