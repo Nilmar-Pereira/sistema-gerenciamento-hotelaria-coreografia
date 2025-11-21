@@ -1,0 +1,16 @@
+{
+    "quartos": [
+        {
+            "id": 1,
+            "disponivel": "TRUE",
+            "preco_diaria": 80.00
+        },
+        {
+            "id": 2,
+            "disponivel": "FALSE",
+            "preco_diaria": 100.00
+        }
+    ]
+}
+
+

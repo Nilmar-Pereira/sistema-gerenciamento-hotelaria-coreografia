@@ -9,7 +9,6 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     hostname: kafka
@@ -25,8 +24,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-  venda:
+  reserva:
     image: reserva
     build: . 
     container_name: reserva
@@ -37,8 +35,7 @@ services:
     volumes:
       - ./servicos/reserva:/servicos
     command: python3 /servicos/servico.py
-
-  estoque:
+  quarto:
     image: quarto
     build: . 
     container_name: quarto
@@ -47,14 +44,6 @@ services:
     volumes:
       - ./servicos/quarto:/servicos
     command: python3 /servicos/servico.py
-  
-  hospedes:
-    image: hospede
-    build: .
-    container_name: hospede
-    hostname: hospede
-    restaart: always 
-    volumes:
-      - ./servicos/hospede:/servicos
-    command: python3 /servicos/servico.py
+
+
   
