@@ -11,13 +11,13 @@ painel = Consumer(
 )
 
 while True:
-    print(f"verificando reservas")
+    print(f"verificando quartos")
     try:
-        painel.assign([TopicPartition("reserva_quartos", 0, 0)])
+        painel.assign([TopicPartition("consulta_quartos", 0, 0)])
         reserva = painel.poll(timeout=2)
         while reserva:
             reserva = json.loads(reserva.value())
-            print(f"dados da reserva: {reserva}")
+            print(f"dados da reserva: {reserva}"\n)
 
             reserva = painel.poll(timeout=2)
     except Exception as erro:

@@ -2,12 +2,14 @@
     "quartos": [
         {
             "id": 1,
-            "disponivel": "TRUE",
+            "tipo": "Solteiro",
+            "disponivel": true,
             "preco_diaria": 80.00
         },
         {
             "id": 2,
-            "disponivel": "FALSE",
+            "tipo": "Casal",
+            "disponivel": false,
             "preco_diaria": 100.00
         }
     ]

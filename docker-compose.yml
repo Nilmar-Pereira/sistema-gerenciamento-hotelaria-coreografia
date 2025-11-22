@@ -44,6 +44,15 @@ services:
     volumes:
       - ./servicos/quarto:/servicos
     command: python3 /servicos/servico.py
+  hospedes:
+    image: hospede
+    build: .
+    container_name: hospede
+    hostname: hospede
+    restart: always 
+    volumes:
+      - ./servicos/hospede:/servicos
+    command: python3 /servicos/servico.py
 
 
   

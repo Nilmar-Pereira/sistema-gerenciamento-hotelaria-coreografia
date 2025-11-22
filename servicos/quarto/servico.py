@@ -4,33 +4,33 @@ import json
 
 from confluent_kafka import Consumer, Producer, TopicPartition
 
-PROCESSO = "reserva_quartos"
-PROCESSO_DE_RESERVA = "reserva_hospede"
+PROCESSO = "consulta_quartos"
+PROCESSO_DE_RESERVA = "reserva_solicitada"
 QUARTOS = "/servicos/quartos.json"
 
 deslocamento = 0
 
-def validar_reservas(solicitacao_reserva):
-    valido, mensagem, total_reserva = (solicitacao_reserva["sucesso"] == 1), "", 0.0
+def consultar_quartos(solicitacao):
+    valido, tipo_quarto, mensagem, total_reserva = (solicitacao["sucesso"] == 1), "", "", 0.0
     if valido:
-        with open(QUARTOS, "r") as arquivo_reservas:
-            quarto = json.load(arquivo_reservas)
-            reservas = quarto["quartos"]
-            for reserva in reservas:
-                print(reserva)
-                if reserva["id"] == solicitacao_reserva["id_quarto"]:
-                   # tipo = quarto["tipo"]
-                    valido = (solicitacao_reserva["disponivel"] == quarto["disponivel"])
+        with open(QUARTOS, "r") as arquivo_quartos:
+            quarto = json.load(arquivo_quartos)
+            quartos = quarto["quartos"]
+            for quarto in quartos:
+                print(quarto)
+                if quarto["id"] == solicitacao["id_quarto"]:
+                    tipo_quarto = quarto["tipo"]
+                    valido = quarto["disponivel"] == True
                     if valido:
-                        total_reserva = solicitacao_reserva["quantidade_diaria"] * float(quarto["preco_diaria"])
-                        mensagem = "Quarto reservado com sucesso #" + solicitacao_reserva["identificacao"]
+                        total_reserva = solicitacao["quantidade_diaria"] * float(quarto["preco_diaria"])
+                        mensagem = "Quarto disponivel para reserva!" + solicitacao["identificacao"]
                     else:
                         mensagem = "O quarto já está reservado!"
                     break
-            arquivo_reservas.close()
+            arquivo_quartos.close()
     else:
-        mensagem = "A reserva do quarto não foi efetuada!"
-    return valido, mensagem, total_reserva
+        mensagem = "Não foi possível consultar o quarto!"
+    return valido, tipo_quarto, mensagem, total_reserva
 
 def executar():
     global deslocamento
@@ -47,25 +47,25 @@ def executar():
         "bootstrap.servers": "kafka:9092"
     })
 
-    reserva = consumidor.poll(timeout=2.0)
-    while reserva:
+    solicitacao = consumidor.poll(timeout=2.0)
+    while solicitacao:
         deslocamento += 1
 
-        reserva = reserva.value()
-        reserva = json.loads(reserva)
+        solicitacao = solicitacao.value()
+        solicitacao = json.loads(solicitacao)
 
-        valido, mensagem, total_reserva = validar_reservas(reserva)
+        valido, tipo_quarto, mensagem, total_reserva = consultar_quartos(solicitacao)
         if valido:
-            reserva["sucesso"] = 1
+            solicitacao["sucesso"] = 1
         else:
-            reserva["sucesso"] = 0
-        #reserva["tipo"] = tipo
-        reserva["mensagem"] = mensagem
-        reserva["total_reserva"] = total_reserva
+            solicitacao["sucesso"] = 0
+        solicitacao["tipo"] = tipo_quarto
+        solicitacao["mensagem"] = mensagem
+        solicitacao["total_reserva"] = total_reserva
 
-        produtor.produce(PROCESSO, key=reserva["identificacao"], value=json.dumps(reserva).encode("utf-8"))
+        produtor.produce(PROCESSO, key=solicitacao["identificacao"], value=json.dumps(solicitacao).encode("utf-8"))
         produtor.flush()
-        reserva = consumidor.poll(timeout=2.0)
+        solicitacao = consumidor.poll(timeout=2.0)
 
 if __name__ == "__main__":
     agendador = APScheduler()

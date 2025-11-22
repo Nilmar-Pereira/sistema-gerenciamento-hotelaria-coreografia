@@ -13,7 +13,7 @@ painel = Consumer(
 while True:
     print(f"verificando reservas")
     try:
-        painel.assign([TopicPartition("reserva_hospede", 0, 0)])
+        painel.assign([TopicPartition("reserva_solicitada", 0, 0)])
         reserva = painel.poll(timeout=2)
         while reserva:
             reserva = json.loads(reserva.value())

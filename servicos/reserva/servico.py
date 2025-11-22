@@ -7,9 +7,9 @@ import random
 import string
 import json
 
-PROCESSO = "reserva_hospede"
+PROCESSO = "reserva_solicitada"
 INFO = {
-    "descricao": "Serviço que efetua a reserva de hóspedes",
+    "descricao": "Serviço que solicita a reserva de hóspedes",
     "versao": "0.0.1"
 }
 
@@ -31,8 +31,8 @@ def reservar_hospede():
             "sucesso": 1,
             "mensagem": "reserva iniciada",
             "id_quarto": dados["id_quarto"],
-           # "tipo_quarto": dados["tipo_quarto"],
-            "disponivel": dados["disponivel"],
+            "id_hospede": dados["id_hospede"],
+           # "disponivel": dados["disponivel"],
             "quantidade_diaria": dados["quantidade_diaria"]
         }
 

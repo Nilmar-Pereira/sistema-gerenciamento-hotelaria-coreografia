@@ -1,0 +1,19 @@
+{
+    "hospedes": [
+        {
+            "id": 1,
+            "nome": "Nilmar Pereira Sousa",
+            "email": "nilmar@teste.com",
+            "pendencia": true
+        },
+        {
+            "id": 2,
+            "nome": "Ana Clara",
+            "email": "ana@teste.com",
+            "pendencia": false
+        }
+    ]
+}
+
+
+
