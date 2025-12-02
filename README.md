@@ -62,8 +62,6 @@ Serviço de quarto
 
 Serviço de hospede
 
-Painéis opcionais (se você executar manualmente)
-
 📬 Como Enviar uma Solicitação de Reserva
 
 Após os containers estarem rodando:
