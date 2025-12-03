@@ -31,7 +31,7 @@ def validar_hospede(solicitacao):
                 
                 # valida pendências
                 if hospede["pendencia"] == False:
-                    mensagem = "Hóspede validado com sucesso! ID da reserva: " + solicitacao["identificacao"]
+                    mensagem = "Hóspede validado com sucesso e reserva concluída! ID da reserva: " + solicitacao["identificacao"]
                     valido = True
                 else:
                     mensagem = "O hóspede possui pendências, portanto a reserva não pode ser concluída."
