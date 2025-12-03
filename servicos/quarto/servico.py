@@ -37,7 +37,7 @@ def executar():
     consumidor = Consumer(
         {
             "bootstrap.servers": "kafka:9092",
-            "group.id": "hotelaria",
+            "group.id": "servico-quartos",
             "auto.offset.reset": "earliest"
         }
     )

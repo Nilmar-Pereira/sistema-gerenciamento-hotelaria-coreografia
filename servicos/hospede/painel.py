@@ -5,7 +5,7 @@ import json
 painel = Consumer(
     {
         "bootstrap.servers": "kafka:9092",
-        "group.id": "hotelaria",
+        "group.id": "servico-hospedes",
         "auto.offset.reset": "earliest"
     }
 )
@@ -17,7 +17,7 @@ while True:
         hospede = painel.poll(timeout=2)
         while hospede:
             hospede = json.loads(hospede.value())
-            print(f"dados do hospede: {hospede}")
+            print(f"dados do hospede: {hospede}\n")
 
             hospede = painel.poll(timeout=2)
     except Exception as erro:

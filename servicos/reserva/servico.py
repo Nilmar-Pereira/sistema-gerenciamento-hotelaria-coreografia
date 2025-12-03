@@ -32,7 +32,6 @@ def reservar_hospede():
             "mensagem": "reserva iniciada",
             "id_quarto": dados["id_quarto"],
             "id_hospede": dados["id_hospede"],
-           # "disponivel": dados["disponivel"],
             "quantidade_diaria": dados["quantidade_diaria"]
         }
 
